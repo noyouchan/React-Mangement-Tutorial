@@ -3,6 +3,7 @@ import React from 'react';
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 
+// Table을 이용해서 간단하게 UI 설정
 class Customer extends React.Component {
     render() {
         return (

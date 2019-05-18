@@ -56,6 +56,8 @@ class App extends Component {
     const { classes } = this.props;
     return (
       /* 화면 크기에 따라 내용이 유동적으로 조절 */
+
+      // Paper로 감싸서 해당 CSS가 적용되도록 함
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
