@@ -25,33 +25,43 @@ const styles = theme => ({
   }
 })
 
-const customers = [{
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': '노유찬',
-  'birthday': '950406',
-  'gender': '남자',
-  'job': '프로그래머'
-},
-{
-  'id': 2,
-  'image': 'https://placeimg.com/64/64/2',
-  'name': '김쾌남',
-  'birthday': '951231',
-  'gender': '남자',
-  'job': '프로그래머'
-},
-{
-  'id': 3,
-  'image': 'https://placeimg.com/64/64/3',
-  'name': '김성찬',
-  'birthday': '951231',
-  'gender': '남자',
-  'job': '프로그래머'
-}
-]
+/*
+
+1) constructor()
+
+2) componentWillMount()
+
+3) render()
+
+4) componentDidMount()
+
+props or state => shouldComponentUpdate()
+
+*/
 
 class App extends Component {
+
+  // 고정 데이터는 props, 유동 데이터는 state로 선언
+  state ={
+    customers: ""
+  }
+
+  // api에 접속하여 데이터 받아오기
+  componentDidMount() {
+    // api로부터 데이터를 받아오면 state에 있는 customers에 저장
+    // 오류 발생 시 오류 메시지 출력
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    // 해당 주소에 접속하여 데이터를 가져와 body 변수에 담음
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -71,7 +81,12 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            { customers.map(c => { return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> })}
+            {/* // state로부터 데이터를 가져온다.
+                // 처음에는 비어있는 state의 customers가 호출되기 때문에 오류가 발생
+                // 약간의 시간이 지나면 데이터를 가져오기 때문에 그때 데이터로 갱신을 해주어야 함 */}
+            {/* { this.state.customers.map(c => { return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> })} */}
+            { this.state.customers ? this.state.customers.map(c => {
+               return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> }) : "" } 
           </TableBody>
         </Table>
       </Paper>
@@ -81,3 +96,4 @@ class App extends Component {
 
 // 적용한 상태로 내보내기
 export default withStyles(styles)(App);
+
